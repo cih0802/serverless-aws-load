@@ -30,7 +30,7 @@ def lambda_handler(event, context):
         select_stmt = f"$1, '{search_date_str}'"
     else:  # ETF 케이스
         table_name = "raw_etf"
-        s3_path = f"etf_data/year={year}/month={month}/day={day}/"
+        s3_path = f"etf/year={year}/month={month}/day={day}/"
         select_stmt = f"$1, '{search_date_str}'"
 
     # 3. Snowflake 연결
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
             COPY INTO {table_name} (raw_data, search_date)
             FROM (
               SELECT {select_stmt}
-              FROM @my_s3_stage/{s3_path}
+              FROM @my_oregon_s3_stage/{s3_path}
             )
             FILE_FORMAT = (TYPE = JSON)
             ON_ERROR = 'CONTINUE';
