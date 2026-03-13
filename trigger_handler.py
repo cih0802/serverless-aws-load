@@ -33,3 +33,4 @@ def lambda_handler(event, context):
         
     finally:
         conn.close()
+        
